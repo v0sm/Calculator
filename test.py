@@ -1,5 +1,5 @@
 import pytest
-from calculator import Calculator
+from src.calculator import Calculator
 
 
 def test_simple():
