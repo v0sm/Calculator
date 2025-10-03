@@ -2,14 +2,32 @@ from calculator import Calculator
 
 
 def show_help():
+    """
+    Отображает справочную информацию о калькуляторе.
+
+    Показывает список поддерживаемых операций, примеры использования
+    и доступные команды интерфейса.
+    """
     print("\nRPN Калькулятор")
     print("Операции: +, -, *, /, //, %, **")
     print("Унарные: ~ (минус), $ (плюс)")
     print("Примеры: 3 4 +, 5 ~, 2 ( 3 4 + ) *")
-    print("Команды: help, exit, history")
+    print("Команды: help, exit")
 
 
 def format_result(result):
+    """
+    Форматирует числовой результат для отображения.
+
+    Преобразует float числа с нулевой дробной частью в int формат
+    для более читаемого вывода.
+
+    Args:
+        result (int or float): Числовой результат для форматирования.
+
+    Returns:
+        str: Отформатированная строка представления числа.
+    """
     if isinstance(result, float) and result.is_integer():
         return str(int(result))
     elif isinstance(result, float):
@@ -19,8 +37,13 @@ def format_result(result):
 
 
 def main():
+    """
+    Основная функция программы.
+
+    Запускает интерактивный цикл обработки пользовательского ввода,
+    поддерживает вычисления RPN выражений и команды управления.
+    """
     show_help()
-    history = []
 
     while True:
         try:
@@ -33,21 +56,11 @@ def main():
                 show_help()
                 continue
 
-            elif expr.lower() == 'history':
-                for i, (expression, result) in enumerate(history[-10:], 1):
-                    print(f"{i:2}. {expression} = {result}")
-                continue
-
             calc = Calculator(expr)
             result = calc.eval()
             formatted_result = format_result(result)
 
             print(formatted_result)
-
-            history.append((expr, formatted_result))
-
-            if len(history) > 50:
-                history.pop(0)
 
         except KeyboardInterrupt:
             print("\nCtrl+C")
