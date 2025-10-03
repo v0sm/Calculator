@@ -101,6 +101,25 @@ class Calculator:
         raise ValueError(f'Некорректное число: {token}')
 
     @staticmethod
+    def _is_integer_value(num):
+        """
+        Проверяет, является ли число целым по значению.
+
+        Учитывает float числа вида 5.0 как целые.
+
+        Args:
+            num (int or float): Число для проверки.
+
+        Returns:
+            bool: True если число является целым по значению.
+        """
+        if isinstance(num, int):
+            return True
+        if isinstance(num, float):
+            return num.is_integer()
+        return False
+
+    @staticmethod
     def _calc(a, b, op):
         """
         Выполняет бинарную арифметическую операцию.
@@ -133,14 +152,14 @@ class Calculator:
         if op == '//':
             if b == 0:
                 raise ZeroDivisionError('Деление на ноль')
-            if not isinstance(a, int) or not isinstance(b, int):
-                raise TypeError('Операция только для целых чисел')
+            if not Calculator._is_integer_value(a) or not Calculator._is_integer_value(b):
+                raise TypeError('Операция // только для целых чисел')
             return a // b
         if op == '%':
             if b == 0:
                 raise ZeroDivisionError('Деление на ноль')
-            if not isinstance(a, int) or not isinstance(b, int):
-                raise TypeError('Операция только для целых чисел')
+            if not Calculator._is_integer_value(a) or not Calculator._is_integer_value(b):
+                raise TypeError('Операция % только для целых чисел')
             return a % b
         raise ValueError(f'Неизвестный оператор: {op}')
 
