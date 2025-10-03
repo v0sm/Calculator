@@ -40,18 +40,26 @@ rpn-calculator/
 
 ### Команды
 
-Клонирование репозитория
-`git clone <repository-url>`
-`cd rpn-calculator`
+Клонирование репозитория:
+```bash
+git clone <repository-url>
+cd rpn-calculator
+```
 
-Установка зависимостей
-`pip install -r requirements.txt`
+Установка зависимостей:
+```
+pip install -r requirements.txt
+```
 
-Запуск калькулятора
-`python src/main.py`
+Запуск калькулятора:
+```
+python src/main.py
+```
 
-Запуск тестов
-`pytest test.py -v`
+Запуск тестов:
+```
+pytest test.py -v
+```
 
 ## Примеры использования
 
