@@ -26,35 +26,135 @@ class Calculator:
 
     def _preprocess(self, expr):
         """
-        Предобрабатывает выражение для создания списка токенов.
+        Лексический анализатор: преобразует строку в список токенов.
 
-        Проверяет корректность скобок и создает список токенов,
-        добавляя пробелы вокруг скобок при необходимости.
-
-        Args:
-            expr (str): Исходное строковое выражение.
-
-        Returns:
-            list: Список токенов для парсинга.
-
-        Raises:
-            ValueError: Если скобки несбалансированы или нет токенов.
+        Поддерживает разбор выражений без пробелов между операторами и операндами.
+        Распознает числа, операторы, скобки и унарные операторы.
         """
         if not self._check_brackets(expr):
             raise ValueError('Несбалансированные скобки')
 
-        result = ""
-        for char in expr:
-            if char in '()':
-                result += f' {char} '
-            else:
-                result += char
+        tokens = []
+        i = 0
+        length = len(expr)
 
-        tokens = result.split()
+        while i < length:
+            char = expr[i]
+
+            if char.isspace():
+                i += 1
+                continue
+
+            if char in '()':
+                tokens.append(char)
+                i += 1
+                continue
+
+            if char in '~$':
+                tokens.append(char)
+                i += 1
+                continue
+
+            if char == '*' and i + 1 < length and expr[i + 1] == '*':
+                tokens.append('**')
+                i += 2
+                continue
+
+            if char == '/' and i + 1 < length and expr[i + 1] == '/':
+                tokens.append('//')
+                i += 2
+                continue
+
+            if char in '+-*/%':
+                tokens.append(char)
+                i += 1
+                continue
+
+            if char.isdigit() or char == '.':
+                start = i
+
+                while i < length and expr[i].isdigit():
+                    i += 1
+
+                if i < length and expr[i] == '.':
+                    i += 1
+                    while i < length and expr[i].isdigit():
+                        i += 1
+
+                number_str = expr[start:i]
+                if self._is_valid_number(number_str):
+                    tokens.append(number_str)
+                else:
+                    raise ValueError(f'Некорректное число: {number_str}')
+                continue
+
+            if char in '+-':
+                # Проверяем, является ли это началом числа
+                if (i + 1 < length and
+                        (expr[i + 1].isdigit() or expr[i + 1] == '.') and
+                        self._is_start_of_number_context(tokens)):
+
+                    start = i
+                    i += 1
+
+                    while i < length and expr[i].isdigit():
+                        i += 1
+
+                    if i < length and expr[i] == '.':
+                        i += 1
+                        while i < length and expr[i].isdigit():
+                            i += 1
+
+                    number_str = expr[start:i]
+                    if self._is_valid_number(number_str):
+                        tokens.append(number_str)
+                    else:
+                        raise ValueError(f'Некорректное число: {number_str}')
+                    continue
+                else:
+                    tokens.append(char)
+                    i += 1
+                    continue
+
+            # Неизвестный символ
+            raise ValueError(f'Неизвестный символ: {char}')
+
         if not tokens:
             raise ValueError('Выражение не содержит токенов')
 
         return tokens
+
+    @staticmethod
+    def _is_valid_number(num_str):
+        """Проверяет корректность строкового представления числа."""
+        if not num_str:
+            return False
+
+        if num_str[0] in '+-':
+            num_str = num_str[1:]
+
+        if not num_str:
+            return False
+
+        try:
+            float(num_str)
+            return True
+        except ValueError:
+            return False
+
+    @staticmethod
+    def _is_start_of_number_context(tokens):
+        """Определяет, может ли +/- быть началом числа в данном контексте."""
+        if not tokens:
+            return True
+
+        last_token = tokens[-1]
+
+        if last_token in ('(', '+', '-', '*', '/',
+                          '//', '**', '%', '~', '$'):
+            return True
+
+        return False
 
     @staticmethod
     def _check_brackets(expr):
