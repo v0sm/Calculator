@@ -29,7 +29,7 @@ def test_mixed_unary_binary():
 
 
 def test_float_operations():
-    assert Calculator('2 3 +').eval() == pytest.approx(2/3, rel=1e-8)
+    assert Calculator('2 3 /').eval() == pytest.approx(2/3, rel=1e-8)
 
 
 def test_errors():
