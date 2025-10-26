@@ -26,7 +26,8 @@ rpn-calculator/
 ├── src/
 │ ├── calculator.py # Основной класс калькулятора
 │ └── main.py # Консольный интерфейс
-├── test.py # Тесты pytest
+├── tests/
+│ └── test.py # Тесты pytest
 ├── requirements.txt # Зависимости проекта
 ├── .gitignore # Исключения для Git
 └── README.md # Документация
