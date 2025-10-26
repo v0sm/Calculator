@@ -1,21 +1,19 @@
+"""Главный модуль программы."""
 from calculator import Calculator
+from constants import *
 
 
-def show_help():
+def show_help() -> None:
     """
     Отображает справочную информацию о калькуляторе.
 
     Показывает список поддерживаемых операций, примеры использования
     и доступные команды интерфейса.
     """
-    print("\nRPN Калькулятор")
-    print("Операции: +, -, *, /, //, %, **")
-    print("Унарные: ~ (минус), $ (плюс)")
-    print("Примеры: 3 4 +, 5 ~, 2 ( 3 4 + ) *")
-    print("Команды: help, exit")
+    print(HELP_TEXT)
 
 
-def format_result(result):
+def format_result(result: float) -> str:
     """
     Форматирует числовой результат для отображения.
 
@@ -23,20 +21,20 @@ def format_result(result):
     для более читаемого вывода.
 
     Args:
-        result (int or float): Числовой результат для форматирования.
+        result: Числовой результат для форматирования.
 
     Returns:
-        str: Отформатированная строка представления числа.
+        Отформатированная строка представления числа.
     """
     if isinstance(result, float) and result.is_integer():
         return str(int(result))
     elif isinstance(result, float):
-        return f"{result:.6g}"
+        return FLOAT_FORMAT.format(result)
     else:
         return str(result)
 
 
-def main():
+def main() -> None:
     """
     Основная функция программы.
 
@@ -47,12 +45,12 @@ def main():
 
     while True:
         try:
-            expr = input("\nRPN> ").strip()
+            expr = input(PROMPT).strip()
 
-            if expr.lower() == 'exit':
+            if expr.lower() == COMMAND_EXIT:
                 break
 
-            elif expr.lower() == 'help':
+            elif expr.lower() == COMMAND_HELP:
                 show_help()
                 continue
 
