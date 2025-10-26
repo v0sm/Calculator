@@ -98,9 +98,9 @@ def test_float_numbers():
 
 def test_negative_numbers():
     """Тестирует отрицательные числа в выражении."""
-    assert Calculator('5~ 3 +').eval() == -2
-    assert Calculator('10~ 5~ +').eval() == -15
-    assert Calculator('3~ 4 *').eval() == -12
+    assert Calculator('-5 3 +').eval() == -2
+    assert Calculator('-10 5~ +').eval() == -15
+    assert Calculator('-3 4 *').eval() == -12
 
 
 def test_mixed_int_float():
