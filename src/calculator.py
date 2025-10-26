@@ -4,20 +4,12 @@ class Calculator:
 
     Принимает строковые выражения в RPN формате и вычисляет их значения.
     Поддерживает базовые арифметические операции, унарные операторы и скобки.
-
-    Attributes:
-        tokens (list): Список токенов после предобработки выражения.
-        i (int): Текущая позиция в списке токенов.
     """
     def __init__(self, expr):
         """
         Инициализирует калькулятор с выражением.
 
-        Args:
-            expr (str): Выражение в формате RPN для вычисления.
-
-        Raises:
-            ValueError: Если выражение пустое или не содержит токенов.
+        expr (str): Выражение в формате RPN для вычисления.
         """
         if not expr.strip():
             raise ValueError('Пустое выражение')
@@ -43,12 +35,9 @@ class Calculator:
 
             if char.isspace():
                 i += 1
-                continue
-
-            if char in '()':
+            elif char in '()':
                 tokens.append(char)
                 i += 1
-                continue
 
             if char in '~$':
                 tokens.append(char)
